@@ -51,7 +51,7 @@
         //포스팅 박스 열고 닫기 기능
         function toggle_postbox(ev) {
 
-            let postBoxEl = $(cname);
+            let postBoxEl = $("#post-box");
             let postBoxBtnEl = $(ev.target);
             let postBoxBenText = postBoxBtnEl.text();
 
@@ -97,7 +97,7 @@
                                         <div class="memo-view">
                                             <p class="cards-title">${title}</p>
                                             <p class="cards-content">${content}</p>
-                                            <p class="cards-like">${like}</p>
+                                            <p class="cards-like" id="cards-like${id}">${like}</p>
                                             <button type="button" onclick="changeUpdateView(event)" class="btn btn-info" id="edit-button${id}">수정</button>
                                             <button type="button" onclick="deleteMemo('${id}')"class="btn btn-danger" id="delete-button${id}">삭제</button>
                                             <a href="javascript:void(0)" onclick="likeMemo('${id}')"> <span class="icon link-like" style="color:blue;">
@@ -134,14 +134,18 @@
             })
         }
         function likeMemo(id) {
-            console.log("likeMemo")
+            console.log("likeMemo");
+            const like_el = $("cards-like"+id);
             $.ajax({
                 type: "POST",
                 url: "/api/like",
                 data: { 'id': id },
                 success: function (response) {
                     if (response['result'] == 'success') {
-                        window.location.reload()
+                        like_el.val(response['new_like']);
+                        $("#cards-list").html("");
+                        showMemos();
+                        // window.location.reload();
                     } else {
                         alert("서버 오류!")
                     }

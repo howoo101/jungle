@@ -72,7 +72,7 @@ def like():
     new_like = memo['like'] + 1
     db.memos.update_one({'_id': ObjectId(id_value)}, {'$set': {'like': new_like} })
     print(memo['like'])
-    return jsonify({'result': 'success'})
+    return jsonify({'result': 'success','new_like': new_like})
 
 
 if __name__ == '__main__':
